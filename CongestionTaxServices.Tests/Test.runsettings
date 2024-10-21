@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+
+<RunConfiguration>
+        <EnvironmentVariables>
+            <CITY_JSON>Gothenburg.json</CITY_JSON>
+        </EnvironmentVariables>
+    </RunConfiguration>
+
+
+</RunSettings>
