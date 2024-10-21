@@ -15,7 +15,12 @@ namespace CongestionTaxServices.Controller
         {
             _congestionTaxService = congestionTaxService;
         }
-
+    
+        /// <summary>
+        /// Returns the calculated congestion tax
+        /// </summary>
+        /// <param name="congestionTaxRequest"></param>
+        /// <returns>IActionResult</returns>
         [HttpPost]
         [ProducesResponseType(200)]
         public IActionResult CalculateCongestionTax([FromBody] CongestionTaxRequest congestionTaxRequest)

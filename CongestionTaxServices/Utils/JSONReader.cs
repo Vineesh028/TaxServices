@@ -14,6 +14,11 @@ namespace CongestionTaxServices.Utils {
 {
 
     public static CityTaxRates cityTaxRates {get;set;}
+
+    /// <summary>
+    /// Reads the json file and coverts into object
+    /// </summary>
+    /// <param name="cityJson"></param>
     public static void readJSON(String cityJson)
         {
 

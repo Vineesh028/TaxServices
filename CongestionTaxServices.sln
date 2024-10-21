@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CongestionTaxServices", "Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CongestionTaxServices.Tests", "CongestionTaxServices.Tests\CongestionTaxServices.Tests.csproj", "{83C17A44-3A0F-42BD-AC70-7E3148BBF534}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CongestionTaxServices.Tests1", "CongestionTaxServices.Tests1\CongestionTaxServices.Tests1.csproj", "{6AF4ADAA-D89A-4F94-85A4-DEAE9EC792E3}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -2,6 +2,7 @@ using System.Globalization;
 using CongestionTaxServices;
 using CongestionTaxServices.Service;
 using CongestionTaxServices.Services;
+using CongestionTaxServices.TestException;
 using CongestionTaxServices.Utils;
 
 
@@ -9,7 +10,7 @@ using CongestionTaxServices.Utils;
 var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services.AddControllers();
-    builder.Services.AddScoped<ICongestionTaxService, CongestionTaxService>();
+    builder.Services.AddScoped<ITaxService, CongestionTaxService>();
     JSONReader.readJSON(Environment.GetEnvironmentVariable("CITY_JSON"));
 }
 
@@ -18,7 +19,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 builder.Services.AddMvc().AddJsonOptions(options =>
 {
@@ -27,15 +29,16 @@ builder.Services.AddMvc().AddJsonOptions(options =>
 
 
 var app = builder.Build();
-
+app.UseExceptionHandler(opt => { });
 
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// if (app.Environment.IsDevelopment())
+// {
+//     app.UseSwagger();
+//     app.UseSwaggerUI();
+// }
+
 app.MapControllers();
 app.UseHttpsRedirection();
 

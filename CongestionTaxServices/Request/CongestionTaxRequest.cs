@@ -1,8 +1,8 @@
 using CongestionTaxServices.Model;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace CongestionTaxServices.Request;
 
-public record CongestionTaxRequest(Vehicle vehicle, DateTime[] dates);
+public record CongestionTaxRequest([Required]Vehicle vehicle, [Required]DateTime[] dates);
 
-//DateTime myDate = DateTime.ParseExact(expiredDate, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
