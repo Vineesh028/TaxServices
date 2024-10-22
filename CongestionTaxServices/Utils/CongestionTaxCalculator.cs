@@ -16,14 +16,14 @@ namespace CongestionTaxServices.Utils
         /// <returns></returns>
         public int GetTax(Vehicle vehicle, DateTime[] dates)
         {
-            if (vehicle == null) throw new System.Exception("Vehicle field is null");
-            if (string.IsNullOrEmpty(vehicle.VehicleType)) throw new System.Exception("Vehicle type field is empty");
+            if (vehicle == null) throw new ArgumentException(Constants.VEHICLE_NULL_MESSAGE);
+            
+            if (string.IsNullOrEmpty(vehicle.VehicleType)) throw new ArgumentException(Constants.VEHICLE_TYPE_EMPTY_MESSAGE);
+            
             String vehicleType = vehicle.VehicleType;
-            // if(Enum.IsDefined(typeof(TollFreeVehicles), vehicleType)) throw new System.Exception("Invalid vehicle type"); 
-
             if (!Enum.TryParse<TollFreeVehicles>(vehicleType , out TollFreeVehicles v))
             {
-                throw new System.Exception("Invalid vehicle type");
+                throw new ArgumentException(Constants.INVALID_VEHICLE_TYPE_MESSAGE);
             }
             if (IsTollFreeVehicle(vehicleType)) return 0;
 
@@ -51,22 +51,7 @@ namespace CongestionTaxServices.Utils
             if (totalFee > 60) totalFee = 60;
             return totalFee;
         }
-        /// <summary>
-        /// Checking if the vehicle is tollfree
-        /// </summary>
-        /// <param name="vehicle"></param>
-        /// <returns></returns>
-        /// <exception cref="System.Exception"></exception>
-        private bool IsTollFreeVehicle(string vehicleType)
-        {
 
-            return vehicleType.Equals(TollFreeVehicles.Motorcycle.ToString()) ||
-                   vehicleType.Equals(TollFreeVehicles.Tractor.ToString()) ||
-                   vehicleType.Equals(TollFreeVehicles.Emergency.ToString()) ||
-                   vehicleType.Equals(TollFreeVehicles.Diplomat.ToString()) ||
-                   vehicleType.Equals(TollFreeVehicles.Foreign.ToString()) ||
-                   vehicleType.Equals(TollFreeVehicles.Military.ToString());
-        }
         /// <summary>
         /// Getting toll fee for the time
         /// </summary>
@@ -89,6 +74,24 @@ namespace CongestionTaxServices.Utils
             return 0;
 
         }
+
+        /// <summary>
+        /// Checking if the vehicle is tollfree
+        /// </summary>
+        /// <param name="vehicle"></param>
+        /// <returns></returns>
+        private bool IsTollFreeVehicle(string vehicleType)
+        {
+
+            return vehicleType.Equals(TollFreeVehicles.Motorcycle.ToString()) ||
+                   vehicleType.Equals(TollFreeVehicles.Tractor.ToString()) ||
+                   vehicleType.Equals(TollFreeVehicles.Emergency.ToString()) ||
+                   vehicleType.Equals(TollFreeVehicles.Diplomat.ToString()) ||
+                   vehicleType.Equals(TollFreeVehicles.Foreign.ToString()) ||
+                   vehicleType.Equals(TollFreeVehicles.Military.ToString())||
+                   vehicleType.Equals(TollFreeVehicles.Bus.ToString());
+        }
+
         /// <summary>
         /// Checking whether toll free date  
         /// </summary>
@@ -127,39 +130,10 @@ namespace CongestionTaxServices.Utils
                 }
 
             }
-            // int year = date.Year;
-            // int month = date.Month;
-            // int day = date.Day;
 
-            // if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) return true;
-
-            // if (year == 2013)
-            // {
-            //     if (month == 1 && day == 1 ||
-            //         month == 3 && (day == 28 || day == 29) ||
-            //         month == 4 && (day == 1 || day == 30) ||
-            //         month == 5 && (day == 1 || day == 8 || day == 9) ||
-            //         month == 6 && (day == 5 || day == 6 || day == 21) ||
-            //         month == 7 ||
-            //         month == 11 && day == 1 ||
-            //         month == 12 && (day == 24 || day == 25 || day == 26 || day == 31))
-            //     {
-            //         return true;
-            //     }
-            // }
             return false;
         }
 
-        private enum TollFreeVehicles
-        {
-            Motorcycle = 0,
-            Tractor = 1,
-            Emergency = 2,
-            Diplomat = 3,
-            Foreign = 4,
-            Military = 5,
-            Car = 6
-        }
     }
 
 

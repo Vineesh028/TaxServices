@@ -3,9 +3,7 @@
 
 <RunConfiguration>
         <EnvironmentVariables>
-            <CITY_JSON>Gothenburg.json</CITY_JSON>
+            <CITY_JSON>Inputs/Gothenburg.json</CITY_JSON>
         </EnvironmentVariables>
     </RunConfiguration>
-
-
 </RunSettings>

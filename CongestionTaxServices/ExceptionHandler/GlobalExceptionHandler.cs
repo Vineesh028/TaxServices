@@ -1,5 +1,7 @@
 
 
+using System.Reflection.Metadata;
+using CongestionTaxServices.Utils;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
@@ -17,6 +19,7 @@ namespace CongestionTaxServices.TestException
         {
             _logger = logger;
         }
+        
         /// <summary>
         /// Writes the exception response json
         /// </summary>
@@ -26,16 +29,17 @@ namespace CongestionTaxServices.TestException
         /// <returns></returns>
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
         {
-            _logger.LogError(exception, "An unexpected error occurred");
+            _logger.LogError(exception, Constants.EXCEPTION_MESSAGE);
             var problemDetails = CreateProblemDetails(httpContext, exception);
             var json = ToJson(problemDetails);
 
-            const string contentType = "application/problem+json";
-            httpContext.Response.ContentType = contentType;
+            
+            httpContext.Response.ContentType = Constants.JSON_CONTENT_TYPE;
             await httpContext.Response.WriteAsync(json, cancellationToken);
 
             return true;
         }
+
         /// <summary>
         /// Creates problem details from exception
         /// </summary>
@@ -73,8 +77,7 @@ namespace CongestionTaxServices.TestException
         }
         catch (Exception ex)
         {
-            const string msg = "An exception has occurred while serializing error to JSON";
-            _logger.LogError(ex, msg);
+            _logger.LogError(ex, Constants.JSON_SERIALIZE_EXCEPTION_MESSAGE);
         }
 
         return string.Empty;

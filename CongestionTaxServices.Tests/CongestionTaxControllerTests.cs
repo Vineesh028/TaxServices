@@ -8,6 +8,7 @@ using CongestionTaxServices.Request;
 using CongestionTaxServices.Response;
 using CongestionTaxServices.Utils;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 using Xunit;
@@ -20,30 +21,11 @@ namespace ApiTest
     {
         private readonly HttpClient _client = factory.CreateClient();
 
-        
-
-    //   public class CongestionTaxControllerTests :IClassFixture<WebApplicationFactory<Program>>
-    //  {
-    //     readonly HttpClient _client;
-
-    // //    // private readonly ITestOutputHelper output;
-    //     public CongestionTaxControllerTests(WebApplicationFactory<Program> application, ITestOutputHelper output){
-           
-    //         _client = application.CreateClient();
-    //         Environment.SetEnvironmentVariable("CITY_JSON", "Gothenburg.json");
-    //     }
-
-        
 
         [Fact]
         public async void CalculateSuccessTest()
         {
 
-  
-            // Console.SetOut(new ConsoleWriter(output));
-            // Assert.True(ToBeTested.Foo("content :" + jsonContent));
-
- 
             var jsonContent = "{\"vehicle\":{\"vehicleType\":\"Car\"},\"dates\":[\"2013-01-15 21:00:00\",\"2013-02-07 06:23:27\",\"2013-02-07 15:27:00\",\"2013-02-08 06:27:00\",\"2013-02-08 06:20:27\",\"2013-02-08 14:35:00\"]}";
   
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
@@ -55,7 +37,7 @@ namespace ApiTest
 
                 var responseContent = await response.Content.ReadFromJsonAsync<CongestionTaxResponse>();
                 responseContent.Should().NotBeNull();
-                responseContent.tax.Should().Be("45SEK");
+                responseContent.tax.Should().Be("45 SEK");
 
 
             }
@@ -80,7 +62,7 @@ namespace ApiTest
 
                 var responseContent = await response.Content.ReadFromJsonAsync<CongestionTaxResponse>();
                 responseContent.Should().NotBeNull();
-                responseContent.tax.Should().Be("60SEK");
+                responseContent.tax.Should().Be("60 SEK");
 
             }
             else
@@ -104,7 +86,7 @@ namespace ApiTest
 
                 var responseContent = await response.Content.ReadFromJsonAsync<CongestionTaxResponse>();
                 responseContent.Should().NotBeNull();
-                responseContent.tax.Should().Be("0SEK");
+                responseContent.tax.Should().Be("0 SEK");
 
             }
             else
@@ -128,7 +110,7 @@ namespace ApiTest
 
                 var responseContent = await response.Content.ReadFromJsonAsync<CongestionTaxResponse>();
                 responseContent.Should().NotBeNull();
-                responseContent.tax.Should().Be("0SEK");
+                responseContent.tax.Should().Be("0 SEK");
 
 
             }
@@ -153,7 +135,7 @@ namespace ApiTest
 
                 var responseContent = await response.Content.ReadFromJsonAsync<CongestionTaxResponse>();
                 responseContent.Should().NotBeNull();
-                responseContent.tax.Should().Be("13SEK");
+                responseContent.tax.Should().Be("13 SEK");
 
 
             }
@@ -162,30 +144,58 @@ namespace ApiTest
                 Assert.Fail("Api call failed.");
             }
         }
+
+        [Fact]
+        public async void InvalidVehicleTypeTest()
+        {
+
+            var jsonContent = "{\"vehicle\":{\"VehicleType\":\"Helicopter\"},\"dates\":[\"2013-01-14 21:00:00\",\"2013-02-07 06:23:27\"]}";
+  
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync("/congestion-tax", content);
+            
+            if (response.StatusCode==HttpStatusCode.InternalServerError)
+            {
+
+                var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+                responseContent.Should().NotBeNull();
+                responseContent.Detail.Should().Be("Invalid vehicle type");
+
+
+            }
+            else
+            {
+                Assert.Fail("Api call failed.");
+            }
+        }
+
+        [Fact]
+        public async void InvalidDateTimeTest()
+        {
+
+            var jsonContent = "{\"vehicle\":{\"VehicleType\":\"Van\"},\"dates\":[\"2013-02-07\",\"2013-02-07 06:23:27\"]}";
+  
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync("/congestion-tax", content);
+            
+            if (response.StatusCode==HttpStatusCode.InternalServerError)
+            {
+
+                var responseContent = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+                responseContent.Should().NotBeNull();
+                responseContent.Detail.Should().Be("Invalid date time format");
+
+
+            }
+            else
+            {
+                Assert.Fail("Api call failed.");
+            }
+        }
+        
     }
-
-    public class ConsoleWriter : StringWriter
-        {
-            private ITestOutputHelper output;
-            public ConsoleWriter(ITestOutputHelper output)
-            {
-                this.output = output;
-            }
-
-            public override void WriteLine(string m)
-            {
-                output.WriteLine(m);
-            }
-        }
-
-           public class ToBeTested
-        {
-            public static bool Foo(String s)
-            {
-                Console.WriteLine(s);
-                return true;
-            }
-        }
 
 
 }

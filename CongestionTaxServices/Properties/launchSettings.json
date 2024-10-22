@@ -1,6 +1,5 @@
 ﻿{
   "$schema": "http://json.schemastore.org/launchsettings.json",
-  "urls": "http://localhost:5068",
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -18,7 +17,7 @@
       "applicationUrl": "http://localhost:5286",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "CITY_JSON":"Gothenburg.json"
+        "CITY_JSON":"Inputs/Gothenburg.json"
       }
     },
     "CongestionTaxServices": {
@@ -29,7 +28,7 @@
       "applicationUrl": "http://localhost:5286",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Test",
-        "CITY_JSON":"Gothenburg.json"
+        "CITY_JSON":"Inputs/Gothenburg.json"
       }
     },
     "IIS Express": {

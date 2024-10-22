@@ -8,5 +8,5 @@ RUN dotnet publish -o /app
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app .
-ENV CITY_JSON=Gothenburg.json
+ENV CITY_JSON=Inputs/Copenhagen.json
 ENTRYPOINT ["./CongestionTaxServices"]
